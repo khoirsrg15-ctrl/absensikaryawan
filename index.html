@@ -1,0 +1,31 @@
+<!doctype html>
+<html lang="id"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1">
+<meta name="theme-color" content="#142b49"><meta name="apple-mobile-web-app-capable" content="yes">
+<meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
+<link rel="manifest" href="/manifest.webmanifest"><link rel="apple-touch-icon" href="/icons/icon-192.png">
+<title>Absensi Online</title><link rel="stylesheet" href="/style.css"></head>
+<body><div class="app">
+<header><div class="brand"><div class="logo">A</div><div><b id="company">ABSENSI ONLINE</b><small>Portal Kehadiran Karyawan</small></div></div><div id="userbar" class="hidden"><span id="who"></span><button class="btn secondary install-btn" id="installApp">＋ Pasang Aplikasi</button><button class="btn ghost" id="logout">Keluar</button></div>
+<button class="btn secondary install-btn" id="installAppGuest">＋ Pasang Aplikasi</button></header>
+<main>
+<section id="loginView" class="login-wrap"><div class="hero"><span class="eyebrow">EMPLOYEE PORTAL</span><h1>Kelola kehadiran<br><em>lebih mudah.</em></h1><p>Absensi digital dengan verifikasi foto dan lokasi GPS, serta laporan yang tersusun otomatis.</p><div class="hero-points"><span>✓ Verifikasi selfie</span><span>✓ Lokasi GPS</span><span>✓ Rekap real-time</span></div></div>
+<form id="loginForm" class="panel login-card"><div class="eyebrow">SELAMAT DATANG</div><h2>Masuk akun</h2><p class="muted">Gunakan email dan password yang diberikan admin.</p><label>Email<input name="email" type="email" placeholder="nama@perusahaan.com" required></label><label>Password<input name="password" type="password" placeholder="Masukkan password" required></label><button class="btn primary full">Masuk ke Dashboard</button><div id="loginError" class="error"></div><small class="hint">Admin awal dikonfigurasi melalui file .env.</small></form></section>
+<section id="employeeView" class="hidden">
+<div class="welcome"><div><span class="eyebrow">EMPLOYEE DASHBOARD</span><h1>Halo, <span id="employeeName">Karyawan</span> 👋</h1><p class="muted">Pantau dan catat kehadiran kerja Anda.</p></div><div class="date-chip" id="todayDate"></div></div>
+<div class="stats three"><article class="stat"><small>Status hari ini</small><b id="todayStatus">Belum absen</b><span>Presensi berjalan</span></article><article class="stat"><small>Jam masuk</small><b id="checkInTime">—</b><span>Waktu tercatat</span></article><article class="stat"><small>Jam pulang</small><b id="checkOutTime">—</b><span>Waktu tercatat</span></article></div>
+<div class="attendance-grid"><article class="panel action-card"><div class="card-head"><div><span class="eyebrow">PRESENSI HARIAN</span><h2>Catat kehadiran</h2></div><span class="live-dot">● Hari ini</span></div><p class="muted">Izinkan akses kamera dan lokasi. Foto selfie serta koordinat GPS disimpan bersama catatan absensi.</p>
+<div class="camera-area"><video id="video" autoplay playsinline class="hidden"></video><img id="preview" class="hidden" alt="Preview selfie"><div id="cameraPlaceholder"><div class="camera-icon">◎</div><b>Ambil foto selfie</b><small>Format JPG/PNG, maks. 3 MB</small></div></div>
+<div class="camera-actions"><button class="btn secondary" id="startCamera">Buka Kamera</button><button class="btn secondary" id="takePhoto" disabled>Ambil Foto</button><button class="btn textbtn" id="retake" disabled>Ulangi</button></div><canvas id="canvas" class="hidden"></canvas><div class="location" id="locationText">◎ Lokasi GPS belum diambil</div>
+<div class="two-actions"><button class="btn primary" id="checkIn">Absen Masuk</button><button class="btn dark" id="checkOut">Absen Pulang</button></div><div id="attendanceMessage" class="message"></div></article>
+<article class="panel history-card"><span class="eyebrow">AKTIVITAS</span><h2>Riwayat absensi</h2><div id="history" class="history-list"><p class="muted">Memuat riwayat...</p></div></article></div>
+</section>
+<section id="adminView" class="hidden">
+<div class="welcome"><div><span class="eyebrow">ADMINISTRATION</span><h1>Dashboard Admin</h1><p class="muted">Ringkasan kehadiran dan pengelolaan karyawan.</p></div><div class="date-chip" id="adminDate"></div></div>
+<div class="stats four"><article class="stat"><small>Total karyawan</small><b id="totalEmployees">0</b><span>Terdaftar</span></article><article class="stat"><small>Hadir hari ini</small><b id="presentCount">0</b><span>Sudah absen masuk</span></article><article class="stat"><small>Belum hadir</small><b id="absentCount">0</b><span>Belum tercatat</span></article><article class="stat"><small>Sudah pulang</small><b id="outCount">0</b><span>Absen pulang</span></article></div>
+<div class="panel filters"><div><span class="eyebrow">LAPORAN KEHADIRAN</span><h2>Data absensi</h2></div><div class="filter-controls"><label>Dari<input id="dateFrom" type="date"></label><label>Sampai<input id="dateTo" type="date"></label><button class="btn secondary" id="filterBtn">Tampilkan</button><button class="btn primary" id="exportBtn">↓ Export Excel</button></div></div>
+<div class="panel table-panel"><div class="table-wrap"><table><thead><tr><th>Tanggal</th><th>Nama</th><th>Departemen</th><th>Masuk</th><th>Pulang</th><th>Status</th><th>Lokasi</th></tr></thead><tbody id="attendanceRows"><tr><td colspan="7">Memuat data...</td></tr></tbody></table></div></div>
+<div class="admin-bottom"><form id="addUserForm" class="panel add-user"><span class="eyebrow">MANAJEMEN TIM</span><h2>Tambah karyawan</h2><label>Nama lengkap<input name="name" required></label><label>Email<input name="email" type="email" required></label><label>Departemen<input name="department" placeholder="Contoh: Operasional"></label><label>Password awal<input name="password" type="password" minlength="8" required></label><button class="btn primary full">+ Tambah Karyawan</button><div id="userMessage" class="message"></div></form>
+<div class="panel staff-panel"><span class="eyebrow">DAFTAR KARYAWAN</span><h2>Karyawan terdaftar</h2><div id="staffList" class="staff-list"></div></div></div>
+</section>
+</main><div id="installHelp" class="install-help hidden"></div><footer>© <span id="year"></span> <span id="footerCompany">Absensi Online</span> · Sistem Kehadiran Digital</footer></div>
+<script src="/app.js"></script></body></html>
